@@ -81,6 +81,10 @@ public class ControllerConf extends PinotConfiguration {
   public static final String TABLE_CONFIG_TUNER_PACKAGES = "controller.table.config.tuner.packages";
   public static final String DEFAULT_TABLE_CONFIG_TUNER_PACKAGES = "org.apache.pinot";
 
+  // Comma separated list of classes that implement the TableConfigValidator interface
+  public static final String TABLE_CONFIG_VALIDATOR_CLASSES = "controller.table.config.validator.classes";
+  public static final String DEFAULT_TABLE_CONFIG_VALIDATOR_CLASSES = "ai.startree.pinot.controller.validators.tableconfig.TablePreviewValidation";
+
   // Comma separated list of packages that contains javax service resources.
   public static final String CONTROLLER_RESOURCE_PACKAGES = "controller.restlet.api.resource.packages";
   public static final String DEFAULT_CONTROLLER_RESOURCE_PACKAGES = "org.apache.pinot.controller.api.resources";
@@ -1238,6 +1242,11 @@ public class ControllerConf extends PinotConfiguration {
   public List<String> getTableConfigTunerPackages() {
     return Arrays.asList(
         getProperty(TABLE_CONFIG_TUNER_PACKAGES, DEFAULT_TABLE_CONFIG_TUNER_PACKAGES).split("\\s*,\\s*"));
+  }
+
+  public List<String> getTableConfigValidators() {
+    return Arrays.asList(
+        getProperty(TABLE_CONFIG_VALIDATOR_CLASSES, DEFAULT_TABLE_CONFIG_VALIDATOR_CLASSES).split("\\s*,\\s*"));
   }
 
   public String getControllerResourcePackages() {

@@ -92,6 +92,8 @@ public class FunctionInvoker {
   /**
    * Converts the type of the given arguments to match the parameter classes. Leaves the argument as is if type
    * conversion is not needed or supported.
+   *
+   * Maybe we require canConvertTypes(Object[] types) here to check if conversion is possible.
    */
   public void convertTypes(Object[] arguments) {
     int numParameters = _parameterClasses.length;
@@ -120,6 +122,8 @@ public class FunctionInvoker {
 
   /**
    * Returns the class of the result value.
+   * This is what we need.
+   * Note - This won't validate if the expr is valid. eg: add(integer, string) won't be validated. Even if we want to type cast, we might want to validate if it can be type casted.
    */
   public Class<?> getResultClass() {
     return _method.getReturnType();

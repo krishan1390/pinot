@@ -107,6 +107,8 @@ import org.apache.pinot.controller.util.CompletionServiceHelper;
 import org.apache.pinot.controller.util.TableIngestionStatusHelper;
 import org.apache.pinot.controller.util.TableMetadataReader;
 import org.apache.pinot.controller.util.TaskConfigUtils;
+import org.apache.pinot.controller.validation.tableconfig.TableConfigValidator;
+import org.apache.pinot.controller.validation.tableconfig.TableConfigValidatorRegistry;
 import org.apache.pinot.core.auth.Actions;
 import org.apache.pinot.core.auth.Authorize;
 import org.apache.pinot.core.auth.ManualAuthorization;
@@ -499,8 +501,13 @@ public class PinotTableRestletResource {
       schema = _pinotHelixResourceManager.getTableSchema(tableNameWithType);
       Preconditions.checkState(schema != null, "Failed to find schema for table: %s", tableNameWithType);
       TableConfigUtils.validate(tableConfig, schema, typesToSkip);
+        List<TableConfigValidator> validators = TableConfigValidatorRegistry.getValidators();
+        for (TableConfigValidator validator : validators) {
+          validator.validate(tableConfig, schema);
+        }
     } catch (Exception e) {
       String msg = String.format("Invalid table config: %s with error: %s", tableName, e.getMessage());
+      LOGGER.error(msg, e);
       throw new ControllerApplicationException(LOGGER, msg, Response.Status.BAD_REQUEST, e);
     }
 

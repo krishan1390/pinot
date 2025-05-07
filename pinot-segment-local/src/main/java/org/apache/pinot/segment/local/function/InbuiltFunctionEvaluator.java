@@ -89,6 +89,7 @@ public class InbuiltFunctionEvaluator implements FunctionEvaluator {
             }
             return new ArrayConstantExecutionNode(values);
           default:
+            // probably need to use lookupFunctionInfo(String canonicalName, ColumnDataType[] argumentTypes) here
             FunctionInfo functionInfo = FunctionRegistry.lookupFunctionInfo(canonicalName, numArguments);
             if (functionInfo == null) {
               if (FunctionRegistry.contains(canonicalName)) {

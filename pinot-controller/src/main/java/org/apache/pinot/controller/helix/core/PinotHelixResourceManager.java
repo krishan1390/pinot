@@ -4586,7 +4586,8 @@ public class PinotHelixResourceManager {
                 } else {
                   // Update the lineage entry to 'REVERTED'
                   entry.setValue(new LineageEntry(lineageEntry.getSegmentsFrom(), segmentsToForEntryToRevert,
-                      LineageEntryState.REVERTED, System.currentTimeMillis()));
+                      LineageEntryState.REVERTED, System.currentTimeMillis(),
+                      lineageEntry.isAutoCompleteLineageEntry()));
                 }
 
                 // Add segments for proactive clean-up.
@@ -4763,7 +4764,7 @@ public class PinotHelixResourceManager {
         // Update lineage entry
         LineageEntry lineageEntryToUpdate =
             new LineageEntry(lineageEntry.getSegmentsFrom(), segmentsTo, LineageEntryState.COMPLETED,
-                System.currentTimeMillis());
+                System.currentTimeMillis(), lineageEntry.isAutoCompleteLineageEntry());
 
         TableConfig tableConfig = ZKMetadataProvider.getTableConfig(_propertyStore, tableNameWithType);
         Map<String, String> customMap =
@@ -4905,7 +4906,7 @@ public class PinotHelixResourceManager {
         // Update segment lineage entry to 'REVERTED'
         LineageEntry lineageEntryToUpdate =
             new LineageEntry(lineageEntry.getSegmentsFrom(), lineageEntry.getSegmentsTo(), LineageEntryState.REVERTED,
-                System.currentTimeMillis());
+                System.currentTimeMillis(), lineageEntry.isAutoCompleteLineageEntry());
 
         TableConfig tableConfig = ZKMetadataProvider.getTableConfig(_propertyStore, tableNameWithType);
         Map<String, String> customMap =
